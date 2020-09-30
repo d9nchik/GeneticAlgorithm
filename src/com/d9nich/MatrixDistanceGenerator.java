@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class MatrixDistanceGenerator {
     public static final int INFINITY = Integer.MAX_VALUE / 2;
-    public static final int MAX = 50;
+    public static final int MAX = 150;
     public static final int MIN = 5;
 
     private MatrixDistanceGenerator() {
