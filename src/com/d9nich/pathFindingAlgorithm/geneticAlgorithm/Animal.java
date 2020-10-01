@@ -28,6 +28,14 @@ public class Animal implements Comparable<Animal> {
     public int[] mutate() {
         int[] geneOfMutateAnimal = new int[gene.length];
         System.arraycopy(gene, 0, geneOfMutateAnimal, 0, gene.length);
+        Random random = new Random();
+        int firstGene = random.nextInt(gene.length);
+        int secondGene;
+        while (firstGene == (secondGene = random.nextInt(gene.length))) {
+        }
+        int temp = geneOfMutateAnimal[firstGene];
+        geneOfMutateAnimal[firstGene] = geneOfMutateAnimal[secondGene];
+        geneOfMutateAnimal[secondGene] = temp;
         return geneOfMutateAnimal;
     }
 

@@ -15,7 +15,7 @@ public class GeneticWorld implements PathFindable {
 
     public GeneticWorld(int[][] MATRIX_OF_DISTANCE) {
         this.MATRIX_OF_DISTANCE = MATRIX_OF_DISTANCE;
-        numberOfAnimals = 15;
+        numberOfAnimals = 100;
         makePopulation();
         iterate();
     }
@@ -42,6 +42,9 @@ public class GeneticWorld implements PathFindable {
         while (firstAnimal == (secondAnimal = random.nextInt(animals.size()))) {
         }
         int[] childGenes = animals.get(firstAnimal).makeCrossoverGene(animals.get(secondAnimal));
+        final Animal childAnimal = new Animal(childGenes, calculatePathLength(childGenes));
+        animals.add(childAnimal);
+        childGenes = childAnimal.mutate();
         animals.add(new Animal(childGenes, calculatePathLength(childGenes)));
         for (int i = animals.size() - numberOfAnimals; i >= 0; i--) {
             Animal worst = Collections.max(animals);
