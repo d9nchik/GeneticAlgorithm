@@ -15,6 +15,7 @@ public class GeneticWorld implements PathFindable {
 
     public GeneticWorld(int[][] MATRIX_OF_DISTANCE) {
         this.MATRIX_OF_DISTANCE = MATRIX_OF_DISTANCE;
+        //TODO: number of animals shouldn't be const
         numberOfAnimals = 100;
         makePopulation();
         iterate();
@@ -31,26 +32,30 @@ public class GeneticWorld implements PathFindable {
             for (int j = 0; j < gene.length; j++) {
                 gene[j] = list.get(j);
             }
-            animals.add(new Animal(gene, calculatePathLength(gene)));
+            animals.add(implementGene(gene));
         }
     }
 
     public void iterate() {
+        //Random choose of parent
+        //TODO: implement pattern 'Strategy'
         Random random = new Random();
         int firstAnimal = random.nextInt(animals.size());
         int secondAnimal;
-        while (firstAnimal == (secondAnimal = random.nextInt(animals.size()))) {
+        while (firstAnimal == (secondAnimal = random.nextInt(animals.size()))) {//DRY - don't repeat yourself
         }
-        int[] childGenes = animals.get(firstAnimal).makeCrossoverGene(animals.get(secondAnimal));
-        final Animal childAnimal = new Animal(childGenes, calculatePathLength(childGenes));
+        final Animal childAnimal = implementGene(animals.get(firstAnimal).makeCrossoverGene(animals.get(secondAnimal)));
         animals.add(childAnimal);
-        childGenes = childAnimal.mutate();
-        animals.add(new Animal(childGenes, calculatePathLength(childGenes)));
+        //TODO: implement mutation variety
+        animals.add(implementGene(childAnimal.mutate()));
+        //Killing of not good fit to live
+        //TODO: put in method
         for (int i = animals.size() - numberOfAnimals; i >= 0; i--) {
             Animal worst = Collections.max(animals);
             animals.remove(worst);
         }
 
+        //Choosing best
         Animal best = Collections.min(animals);
         path = best.getGene();
         length = best.getAttemptToLive();
@@ -64,6 +69,10 @@ public class GeneticWorld implements PathFindable {
             previousPoint = j;
         }
         return totalPath;
+    }
+
+    public Animal implementGene(int[] gene) {
+        return new Animal(gene, calculatePathLength(gene));
     }
 
     @Override
