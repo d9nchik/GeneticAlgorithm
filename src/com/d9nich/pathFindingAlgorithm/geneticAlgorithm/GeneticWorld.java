@@ -71,7 +71,7 @@ public class GeneticWorld implements PathFindable {
         return totalPath;
     }
 
-    public Animal implementGene(int[] gene) {
+    private Animal implementGene(int[] gene) {
         return new Animal(gene, calculatePathLength(gene));
     }
 
