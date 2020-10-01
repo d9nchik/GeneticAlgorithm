@@ -68,8 +68,9 @@ public class GeneticWorld implements PathFindable {
 
     @Override
     public int[] getPath() {
-        //TODO: implement
-        return new int[0];
+        int[] result = new int[path.length];
+        System.arraycopy(path, 0, result, 0, path.length);
+        return result;
     }
 
     @Override
