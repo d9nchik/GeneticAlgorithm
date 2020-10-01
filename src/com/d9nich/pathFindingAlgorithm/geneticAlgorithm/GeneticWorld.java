@@ -48,17 +48,23 @@ public class GeneticWorld implements PathFindable {
         animals.add(childAnimal);
         //TODO: implement mutation variety
         animals.add(implementGene(childAnimal.mutate()));
-        //Killing of not good fit to live
-        //TODO: put in method
-        for (int i = animals.size() - numberOfAnimals; i >= 0; i--) {
-            Animal worst = Collections.max(animals);
-            animals.remove(worst);
-        }
+
+        killOfAnimals();
 
         //Choosing best
         Animal best = Collections.min(animals);
         path = best.getGene();
         length = best.getAttemptToLive();
+    }
+
+    /**
+     * Killing of not good fit to live animals
+     */
+    private void killOfAnimals() {
+        for (int i = animals.size() - numberOfAnimals; i >= 0; i--) {
+            Animal worst = Collections.max(animals);
+            animals.remove(worst);
+        }
     }
 
     public int calculatePathLength(int[] path) {
