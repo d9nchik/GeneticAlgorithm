@@ -12,6 +12,8 @@ public class GeneticWorld implements PathFindable {
     private final ArrayList<Animal> animals = new ArrayList<>();
     private int[] path;
     private int length = Integer.MAX_VALUE / 2;
+    //TODO: put in constructor
+    private final int PERCENT_OF_MUTATION = 50;
 
     public GeneticWorld(int[][] MATRIX_OF_DISTANCE) {
         this.MATRIX_OF_DISTANCE = MATRIX_OF_DISTANCE;
@@ -46,8 +48,9 @@ public class GeneticWorld implements PathFindable {
         }
         final Animal childAnimal = implementGene(animals.get(firstAnimal).makeCrossoverGene(animals.get(secondAnimal)));
         animals.add(childAnimal);
-        //TODO: implement mutation variety
-        animals.add(implementGene(childAnimal.mutate()));
+
+        if (random.nextInt(101) < PERCENT_OF_MUTATION)
+            animals.add(implementGene(childAnimal.mutate()));
 
         killOfAnimals();
 
