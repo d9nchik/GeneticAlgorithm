@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
-public class Animal {
+public class Animal implements Comparable<Animal> {
 
     private final int[] gene;
     private final int attemptToLive;
@@ -56,5 +56,10 @@ public class Animal {
         //Copying missing genes
         notUsedGene.forEach(e -> geneOfChildAnimal[positionInNewGene.getAndIncrement()] = e);
         return geneOfChildAnimal;
+    }
+
+    @Override
+    public int compareTo(Animal o) {
+        return Integer.compare(attemptToLive, o.attemptToLive);
     }
 }
