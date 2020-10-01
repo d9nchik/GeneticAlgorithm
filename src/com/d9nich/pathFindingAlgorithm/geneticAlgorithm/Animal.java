@@ -25,6 +25,12 @@ public class Animal {
         return attemptToLive;
     }
 
+    public int[] mutate() {
+        int[] geneOfMutateAnimal = new int[gene.length];
+        System.arraycopy(gene, 0, geneOfMutateAnimal, 0, gene.length);
+        return geneOfMutateAnimal;
+    }
+
     public int[] makeCrossoverGene(Animal parent) {
         if (parent.gene.length != gene.length)
             throw new InputMismatchException("Parent gene is not the same size as other parent");
