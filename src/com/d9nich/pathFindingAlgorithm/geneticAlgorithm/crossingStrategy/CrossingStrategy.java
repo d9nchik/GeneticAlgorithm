@@ -4,7 +4,7 @@ import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.Liveable;
 
 import java.util.ArrayList;
 
-public abstract class Crossable<T extends Liveable> {
+public abstract class CrossingStrategy<T extends Liveable> {
     protected ArrayList<T> animals;
     protected T firsParent;
     protected T secondParent;

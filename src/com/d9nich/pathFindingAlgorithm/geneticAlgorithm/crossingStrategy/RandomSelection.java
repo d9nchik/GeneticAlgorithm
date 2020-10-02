@@ -4,7 +4,7 @@ import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.Liveable;
 
 import java.util.Random;
 
-public class RandomSelection<T extends Liveable> extends Crossable<T> {
+public class RandomSelection<T extends Liveable> extends CrossingStrategy<T> {
 
     @Override
     public void choosePair() {
