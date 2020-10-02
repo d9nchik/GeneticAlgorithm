@@ -23,7 +23,9 @@ public class GeneticWorld implements PathFindable {
         numberOfAnimals = 1000;
         makePopulation();
         crossingStrategy.setAnimals(pathSearchingAnimals);
-        iterate();
+        PathSearchingAnimal best = Collections.max(pathSearchingAnimals);
+        path = best.getGene();
+        length = best.getPath();
     }
 
     private void makePopulation() {
@@ -44,44 +46,50 @@ public class GeneticWorld implements PathFindable {
     public void iterate() {
         //Choose of parent
         Random random = new Random();
-        crossingStrategy.chooseParents(100);
-        final PathSearchingAnimal childPathSearchingAnimal = implementGene(makeCrossoverGene(
-                crossingStrategy.getParents()));
-        pathSearchingAnimals.add(childPathSearchingAnimal);
+        crossingStrategy.chooseParents(30);
+        pathSearchingAnimals.add(implementGene(makeCrossoverGene(
+                crossingStrategy.getParents())));
+        chooseBest();
 
-        if (random.nextInt(101) < PERCENT_OF_MUTATION)
-            pathSearchingAnimals.add(implementGene(childPathSearchingAnimal.mutate()));
+        if (random.nextInt(101) < PERCENT_OF_MUTATION) {
+            pathSearchingAnimals.add(implementGene(implementGene(makeCrossoverGene(
+                    crossingStrategy.getParents())).mutate()));
+            chooseBest();
+        }
 
         killOfAnimals();
+    }
 
-        //Choosing best
-        //TODO: improve this part of code to O(1)
-        PathSearchingAnimal best = Collections.max(pathSearchingAnimals);
-        path = best.getGene();
-        length = best.getPath();
+    private void chooseBest() {
+        PathSearchingAnimal pathSearchingAnimal = pathSearchingAnimals.get(pathSearchingAnimals.size() - 1);
+        if (pathSearchingAnimal.getPath() < length) {
+            length = pathSearchingAnimal.getPath();
+            path = pathSearchingAnimal.getGene();
+        }
     }
 
     private int[] makeCrossoverGene(PathSearchingAnimal[] animals) {
+//        shuffle(animals);
+        Random random = new Random();
         int[] gene = animals[0].getGene();
         Set<Integer> notUsedGene = new HashSet<>();
-        for (Integer partOfGene : gene)
-            notUsedGene.add(partOfGene);
-        int partOfEachAnimalInChildGene = gene.length / animals.length;
-        for (int i = 0; i < partOfEachAnimalInChildGene; i++) {
-            notUsedGene.remove(gene[i]);
-        }
-        int pointerInGene = partOfEachAnimalInChildGene;
+        for (Integer partOfGene : gene) notUsedGene.add(partOfGene);
+
+        int pointerInGene = random.nextInt(gene.length);
+        for (int i = 0; i < pointerInGene; i++) notUsedGene.remove(gene[i]);
+
         for (int i = 1; i < animals.length; i++) {
             int[] animalFatherGene = animals[i].getGene();
-            int stopPoint = pointerInGene + partOfEachAnimalInChildGene;
+            int stopPoint = pointerInGene + random.nextInt(gene.length - pointerInGene);
             int fatherAnimalPointer = pointerInGene;
-            for (; pointerInGene < stopPoint; pointerInGene++) {
+            while (pointerInGene < stopPoint && fatherAnimalPointer < gene.length) {
                 for (; fatherAnimalPointer < gene.length; fatherAnimalPointer++) {
                     int tempGene = animalFatherGene[fatherAnimalPointer];
                     if (notUsedGene.contains(tempGene)) {
                         gene[pointerInGene] = tempGene;
                         notUsedGene.remove(tempGene);
                         fatherAnimalPointer++;
+                        pointerInGene++;
                         break;
                     }
                 }
@@ -89,8 +97,20 @@ public class GeneticWorld implements PathFindable {
         }
         AtomicInteger pointer = new AtomicInteger(pointerInGene);
         //Copying missing genes
-        notUsedGene.forEach(e -> gene[pointer.getAndIncrement()] = e);
+        notUsedGene.forEach(e -> {
+            gene[pointer.getAndIncrement()] = e;
+        });
         return gene;
+    }
+
+    private <E> void shuffle(E[] array) {
+        Random random = new Random();
+        for (int i = 0; i < array.length / 2; i++) {
+            int position = random.nextInt(array.length);
+            E temp = array[i];
+            array[i] = array[position];
+            array[position] = temp;
+        }
     }
 
     /**
