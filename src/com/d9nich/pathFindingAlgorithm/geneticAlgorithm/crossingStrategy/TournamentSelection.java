@@ -2,19 +2,9 @@ package com.d9nich.pathFindingAlgorithm.geneticAlgorithm.crossingStrategy;
 
 import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.Liveable;
 
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 
-public class TournamentSelection<T extends Liveable> implements Crossable<T> {
-    private ArrayList<T> animals;
-    private T firsParent;
-    private T secondParent;
-
-    @Override
-    public void setAnimals(ArrayList<T> animals) {
-        this.animals = animals;
-    }
-
+public class TournamentSelection<T extends Liveable> extends Crossable<T> {
     @Override
     public void choosePair() {
         if (animals.size() < 2)
@@ -31,15 +21,5 @@ public class TournamentSelection<T extends Liveable> implements Crossable<T> {
             if (secondParent.compareTo(tempParent) < 0)
                 secondParent = tempParent;
         }
-    }
-
-    @Override
-    public T getFirstParent() {
-        return firsParent;
-    }
-
-    @Override
-    public T getSecondParent() {
-        return secondParent;
     }
 }

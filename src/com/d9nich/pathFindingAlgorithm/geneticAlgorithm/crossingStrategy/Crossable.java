@@ -4,12 +4,22 @@ import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.Liveable;
 
 import java.util.ArrayList;
 
-public interface Crossable<T extends Liveable> {
-    void setAnimals(ArrayList<T> animals);
+public abstract class Crossable<T extends Liveable> {
+    protected ArrayList<T> animals;
+    protected T firsParent;
+    protected T secondParent;
 
-    void choosePair();
+    public void setAnimals(ArrayList<T> animals) {
+        this.animals = animals;
+    }
 
-    T getFirstParent();
+    public abstract void choosePair();
 
-    T getSecondParent();
+    public T getFirstParent() {
+        return firsParent;
+    }
+
+    public T getSecondParent() {
+        return secondParent;
+    }
 }
