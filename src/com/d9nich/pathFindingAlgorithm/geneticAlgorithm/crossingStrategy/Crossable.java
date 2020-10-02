@@ -7,8 +7,9 @@ import java.util.ArrayList;
 public interface Crossable<T extends Liveable> {
     void setAnimals(ArrayList<T> animals);
 
+    void choosePair();
+
     T getFirstParent();
 
     T getSecondParent();
-
 }
