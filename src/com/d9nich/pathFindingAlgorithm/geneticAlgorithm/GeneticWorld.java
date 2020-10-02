@@ -1,6 +1,8 @@
 package com.d9nich.pathFindingAlgorithm.geneticAlgorithm;
 
 import com.d9nich.pathFindingAlgorithm.PathFindable;
+import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.crossingStrategy.CrossingStrategy;
+import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.crossingStrategy.MixedSelection;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,6 +15,7 @@ public class GeneticWorld implements PathFindable {
     private int[] path;
     private int length = Integer.MAX_VALUE / 2;
     //TODO: put in constructor
+    private final CrossingStrategy<PathSearchingAnimal> crossingStrategy = new MixedSelection<>();
     private final int PERCENT_OF_MUTATION = 50;
 
     public GeneticWorld(int[][] MATRIX_OF_DISTANCE) {
@@ -20,6 +23,7 @@ public class GeneticWorld implements PathFindable {
         //TODO: number of animals shouldn't be const
         numberOfAnimals = 100;
         makePopulation();
+        crossingStrategy.setAnimals(pathSearchingAnimals);
         iterate();
     }
 
@@ -39,14 +43,11 @@ public class GeneticWorld implements PathFindable {
     }
 
     public void iterate() {
-        //Random choose of parent
-        //TODO: implement pattern 'Strategy'
+        //Choose of parent
         Random random = new Random();
-        int firstAnimal = random.nextInt(pathSearchingAnimals.size());
-        int secondAnimal;
-        while (firstAnimal == (secondAnimal = random.nextInt(pathSearchingAnimals.size()))) {//DRY - don't repeat yourself
-        }
-        final PathSearchingAnimal childPathSearchingAnimal = implementGene(pathSearchingAnimals.get(firstAnimal).makeCrossoverGene(pathSearchingAnimals.get(secondAnimal)));
+        crossingStrategy.choosePair();
+        final PathSearchingAnimal childPathSearchingAnimal = implementGene(crossingStrategy.getFirstParent()
+                .makeCrossoverGene(crossingStrategy.getSecondParent()));
         pathSearchingAnimals.add(childPathSearchingAnimal);
 
         if (random.nextInt(101) < PERCENT_OF_MUTATION)
