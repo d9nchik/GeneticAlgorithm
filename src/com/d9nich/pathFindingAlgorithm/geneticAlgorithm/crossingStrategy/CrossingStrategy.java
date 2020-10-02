@@ -6,20 +6,15 @@ import java.util.ArrayList;
 
 public abstract class CrossingStrategy<T extends Liveable> {
     protected ArrayList<T> animals;
-    protected T firsParent;
-    protected T secondParent;
+    protected ArrayList<T> parents = new ArrayList<>();
 
     public void setAnimals(ArrayList<T> animals) {
         this.animals = animals;
     }
 
-    public abstract void choosePair();
+    public abstract void chooseParents(int numberOfParents);
 
-    public T getFirstParent() {
-        return firsParent;
-    }
-
-    public T getSecondParent() {
-        return secondParent;
+    public T[] getParents() {
+        return (T[]) parents.toArray();
     }
 }
