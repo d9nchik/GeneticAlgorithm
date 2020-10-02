@@ -9,7 +9,7 @@ import java.util.Random;
 public class GeneticWorld implements PathFindable {
     private final int[][] MATRIX_OF_DISTANCE;
     private final int numberOfAnimals;
-    private final ArrayList<Animal> animals = new ArrayList<>();
+    private final ArrayList<PathSearchingAnimal> pathSearchingAnimals = new ArrayList<>();
     private int[] path;
     private int length = Integer.MAX_VALUE / 2;
     //TODO: put in constructor
@@ -34,7 +34,7 @@ public class GeneticWorld implements PathFindable {
             for (int j = 0; j < gene.length; j++) {
                 gene[j] = list.get(j);
             }
-            animals.add(implementGene(gene));
+            pathSearchingAnimals.add(implementGene(gene));
         }
     }
 
@@ -42,31 +42,32 @@ public class GeneticWorld implements PathFindable {
         //Random choose of parent
         //TODO: implement pattern 'Strategy'
         Random random = new Random();
-        int firstAnimal = random.nextInt(animals.size());
+        int firstAnimal = random.nextInt(pathSearchingAnimals.size());
         int secondAnimal;
-        while (firstAnimal == (secondAnimal = random.nextInt(animals.size()))) {//DRY - don't repeat yourself
+        while (firstAnimal == (secondAnimal = random.nextInt(pathSearchingAnimals.size()))) {//DRY - don't repeat yourself
         }
-        final Animal childAnimal = implementGene(animals.get(firstAnimal).makeCrossoverGene(animals.get(secondAnimal)));
-        animals.add(childAnimal);
+        final PathSearchingAnimal childPathSearchingAnimal = implementGene(pathSearchingAnimals.get(firstAnimal).makeCrossoverGene(pathSearchingAnimals.get(secondAnimal)));
+        pathSearchingAnimals.add(childPathSearchingAnimal);
 
         if (random.nextInt(101) < PERCENT_OF_MUTATION)
-            animals.add(implementGene(childAnimal.mutate()));
+            pathSearchingAnimals.add(implementGene(childPathSearchingAnimal.mutate()));
 
         killOfAnimals();
 
         //Choosing best
-        Animal best = Collections.min(animals);
+        //TODO: improve this part of code to O(1)
+        PathSearchingAnimal best = Collections.max(pathSearchingAnimals);
         path = best.getGene();
-        length = best.getAttemptToLive();
+        length = best.getPath();
     }
 
     /**
      * Killing of not good fit to live animals
      */
     private void killOfAnimals() {
-        for (int i = animals.size() - numberOfAnimals; i >= 0; i--) {
-            Animal worst = Collections.max(animals);
-            animals.remove(worst);
+        for (int i = pathSearchingAnimals.size() - numberOfAnimals; i >= 0; i--) {
+            PathSearchingAnimal worst = Collections.min(pathSearchingAnimals);
+            pathSearchingAnimals.remove(worst);
         }
     }
 
@@ -80,8 +81,8 @@ public class GeneticWorld implements PathFindable {
         return totalPath;
     }
 
-    private Animal implementGene(int[] gene) {
-        return new Animal(gene, calculatePathLength(gene));
+    private PathSearchingAnimal implementGene(int[] gene) {
+        return new PathSearchingAnimal(gene, calculatePathLength(gene));
     }
 
     @Override

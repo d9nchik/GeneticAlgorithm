@@ -7,22 +7,22 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
-public class Animal implements Comparable<Animal> {
+public class PathSearchingAnimal implements Liveable {
 
     private final int[] gene;
-    private final int attemptToLive;
+    private final int path;
 
-    public Animal(int[] gene, int attemptToLive) {
+    public PathSearchingAnimal(int[] gene, int path) {
         this.gene = gene;
-        this.attemptToLive = attemptToLive;
+        this.path = path;
     }
 
     public int[] getGene() {
         return gene;
     }
 
-    public int getAttemptToLive() {
-        return attemptToLive;
+    public int getPath() {
+        return path;
     }
 
     public int[] mutate() {
@@ -39,7 +39,7 @@ public class Animal implements Comparable<Animal> {
         return geneOfMutateAnimal;
     }
 
-    public int[] makeCrossoverGene(Animal parent) {
+    public int[] makeCrossoverGene(PathSearchingAnimal parent) {
         if (parent.gene.length != gene.length)
             throw new InputMismatchException("Parent gene is not the same size as other parent");
         Set<Integer> notUsedGene = new HashSet<>();
@@ -67,7 +67,7 @@ public class Animal implements Comparable<Animal> {
     }
 
     @Override
-    public int compareTo(Animal o) {
-        return Integer.compare(attemptToLive, o.attemptToLive);
+    public double fitToLive() {
+        return 1.0 / path;
     }
 }
