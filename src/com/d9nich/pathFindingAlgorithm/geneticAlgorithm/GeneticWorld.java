@@ -1,8 +1,8 @@
 package com.d9nich.pathFindingAlgorithm.geneticAlgorithm;
 
 import com.d9nich.pathFindingAlgorithm.PathFindable;
-import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.crossingStrategy.CrossingStrategy;
-import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.crossingStrategy.MixedSelection;
+import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.selectionStrategy.MixedSelection;
+import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.selectionStrategy.SelectionStrategy;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,7 +15,7 @@ public class GeneticWorld implements PathFindable {
     private int[] path;
     private int length = Integer.MAX_VALUE / 2;
     //TODO: put in constructor
-    private final CrossingStrategy<PathSearchingAnimal> crossingStrategy = new MixedSelection<>();
+    private final SelectionStrategy<PathSearchingAnimal> selectionStrategy = new MixedSelection<>();
     private final int PERCENT_OF_MUTATION = 50;
 
     public GeneticWorld(int[][] MATRIX_OF_DISTANCE) {
@@ -23,7 +23,7 @@ public class GeneticWorld implements PathFindable {
         //TODO: number of animals shouldn't be const
         numberOfAnimals = 100;
         makePopulation();
-        crossingStrategy.setAnimals(pathSearchingAnimals);
+        selectionStrategy.setAnimals(pathSearchingAnimals);
         iterate();
     }
 
@@ -45,9 +45,9 @@ public class GeneticWorld implements PathFindable {
     public void iterate() {
         //Choose of parent
         Random random = new Random();
-        crossingStrategy.choosePair();
-        final PathSearchingAnimal childPathSearchingAnimal = implementGene(crossingStrategy.getFirstParent()
-                .makeCrossoverGene(crossingStrategy.getSecondParent()));
+        selectionStrategy.choosePair();
+        final PathSearchingAnimal childPathSearchingAnimal = implementGene(selectionStrategy.getFirstParent()
+                .makeCrossoverGene(selectionStrategy.getSecondParent()));
         pathSearchingAnimals.add(childPathSearchingAnimal);
 
         if (random.nextInt(101) < PERCENT_OF_MUTATION)

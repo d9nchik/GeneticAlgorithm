@@ -1,10 +1,10 @@
-package com.d9nich.pathFindingAlgorithm.geneticAlgorithm.crossingStrategy;
+package com.d9nich.pathFindingAlgorithm.geneticAlgorithm.selectionStrategy;
 
 import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.Liveable;
 
 import java.util.Random;
 
-public class RandomSelection<T extends Liveable> extends CrossingStrategy<T> {
+public class RandomSelection<T extends Liveable> extends SelectionStrategy<T> {
 
     @Override
     public void choosePair() {

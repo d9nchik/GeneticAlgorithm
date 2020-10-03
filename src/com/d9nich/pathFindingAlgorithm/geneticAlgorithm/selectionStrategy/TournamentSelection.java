@@ -1,10 +1,10 @@
-package com.d9nich.pathFindingAlgorithm.geneticAlgorithm.crossingStrategy;
+package com.d9nich.pathFindingAlgorithm.geneticAlgorithm.selectionStrategy;
 
 import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.Liveable;
 
 import java.util.InputMismatchException;
 
-public class TournamentSelection<T extends Liveable> extends CrossingStrategy<T> {
+public class TournamentSelection<T extends Liveable> extends SelectionStrategy<T> {
     @Override
     public void choosePair() {
         if (animals.size() < 2)
