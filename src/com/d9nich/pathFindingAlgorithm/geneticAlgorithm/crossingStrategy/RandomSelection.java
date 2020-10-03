@@ -2,18 +2,18 @@ package com.d9nich.pathFindingAlgorithm.geneticAlgorithm.crossingStrategy;
 
 import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.Liveable;
 
-import java.util.Collections;
+import java.util.Random;
 
 public class RandomSelection<T extends Liveable> extends CrossingStrategy<T> {
 
     @Override
-    public void chooseParents(int numberOfParents) {
-        if (numberOfParents > animals.size())
-            throw new IllegalArgumentException("numberOfParents can not be bigger than number of animals");
-        Collections.shuffle(animals);
-        parents.clear();
-        for (int i = 0; i < numberOfParents; i++) {
-            parents.add(animals.get(i));
+    public void choosePair() {
+        Random random = new Random();
+        int firstAnimal = random.nextInt(animals.size());
+        firsParent = animals.get(firstAnimal);
+        int secondAnimal;
+        while (firstAnimal == (secondAnimal = random.nextInt(animals.size()))) {//DRY - don't repeat yourself
         }
+        secondParent = animals.get(secondAnimal);
     }
 }
