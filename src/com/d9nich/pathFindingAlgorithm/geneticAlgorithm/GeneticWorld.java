@@ -46,7 +46,7 @@ public class GeneticWorld implements PathFindable {
         //Choose of parent
         final ArrayList<PathSearchingAnimal> parents = (ArrayList<PathSearchingAnimal>) pathSearchingAnimals.clone();
         selectionStrategy.setAnimals(parents);
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < numberOfAnimals / 2; i++) {
             Random random = new Random();
             selectionStrategy.choosePair();
             parents.remove(selectionStrategy.getFirstParent());
