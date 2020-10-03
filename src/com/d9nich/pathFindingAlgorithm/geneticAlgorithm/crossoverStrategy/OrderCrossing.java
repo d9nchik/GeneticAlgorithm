@@ -1,36 +1,31 @@
 package com.d9nich.pathFindingAlgorithm.geneticAlgorithm.crossoverStrategy;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.Random;
+import java.util.Set;
 
-public class PartiallyMapped extends CrossingStrategy {
+public class OrderCrossing extends CrossingStrategy {
 
     private static int[] bornChild(int firstSplitPoint, int secondSplitPoint, int[] firstFather, int[] secondFather) {
         int maxValue = firstFather.length;
         int[] firstChild = new int[maxValue];
-        System.arraycopy(firstFather, 0, firstChild, 0, maxValue);
-        Set<Integer> used = new HashSet<>();
-        Map<Integer, Integer> changes = new HashMap<>();
-        for (int i = firstSplitPoint; i < secondSplitPoint; i++) {
-            used.add(firstChild[i]);
-            changes.put(firstChild[i], i);
+        Set<Integer> insertNode = new LinkedHashSet<>();
+        for (int k : secondFather) {
+            insertNode.add(k);
         }
+        for (int i = firstSplitPoint; i < secondSplitPoint; i++) {
+            firstChild[i] = firstFather[i];
+            insertNode.remove(firstFather[i]);
+        }
+        Iterator<Integer> numbers = insertNode.iterator();
 
         for (int i = 0; i < firstSplitPoint; i++) {
-            int fatherGene = secondFather[i];
-            for (int j = 0; j < 1000 && used.contains(fatherGene); j++) {
-                fatherGene = secondFather[changes.get(fatherGene)];
-            }
-            firstChild[i] = fatherGene;
-            used.add(fatherGene);
+            firstChild[i] = numbers.next();
         }
 
         for (int i = secondSplitPoint; i < firstChild.length; i++) {
-            int fatherGene = secondFather[i];
-            while (used.contains(fatherGene)) {
-                fatherGene = secondFather[changes.get(fatherGene)];
-            }
-            firstChild[i] = fatherGene;
-            used.add(fatherGene);
+            firstChild[i] = numbers.next();
         }
 
         return firstChild;
@@ -46,6 +41,6 @@ public class PartiallyMapped extends CrossingStrategy {
         //Born of first child
         firstChild = bornChild(firstSplitPoint, secondSplitPoint, firstFather, secondFather);
         secondChild = bornChild(firstSplitPoint, secondSplitPoint, secondFather, firstFather);
-    }
 
+    }
 }

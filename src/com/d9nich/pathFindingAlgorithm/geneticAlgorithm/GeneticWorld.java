@@ -1,7 +1,8 @@
 package com.d9nich.pathFindingAlgorithm.geneticAlgorithm;
 
 import com.d9nich.pathFindingAlgorithm.PathFindable;
-import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.crossoverStrategy.PartiallyMapped;
+import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.crossoverStrategy.CrossingStrategy;
+import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.crossoverStrategy.OrderCrossing;
 import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.selectionStrategy.InversedSelection;
 import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.selectionStrategy.SelectionStrategy;
 
@@ -17,6 +18,7 @@ public class GeneticWorld implements PathFindable {
     private int length = Integer.MAX_VALUE / 2;
     //TODO: put in constructor
     private final SelectionStrategy<PathSearchingAnimal> selectionStrategy = new InversedSelection<>();
+    private final CrossingStrategy crossingStrategy = new OrderCrossing();
     private final int PERCENT_OF_MUTATION = 50;
 
     public GeneticWorld(int[][] MATRIX_OF_DISTANCE) {
@@ -51,12 +53,12 @@ public class GeneticWorld implements PathFindable {
             selectionStrategy.choosePair();
             parents.remove(selectionStrategy.getFirstParent());
             parents.remove(selectionStrategy.getSecondParent());
-            PartiallyMapped partiallyMapped = new PartiallyMapped();
-            partiallyMapped.setFirstFather(selectionStrategy.getFirstParent().getGene());
-            partiallyMapped.setSecondFather(selectionStrategy.getSecondParent().getGene());
-            partiallyMapped.crossAnimal();
-            pathSearchingAnimals.add(implementGene(partiallyMapped.getFirstChild()));
-            pathSearchingAnimals.add(implementGene(partiallyMapped.getSecondChild()));
+
+            crossingStrategy.setFirstFather(selectionStrategy.getFirstParent().getGene());
+            crossingStrategy.setSecondFather(selectionStrategy.getSecondParent().getGene());
+            crossingStrategy.crossAnimal();
+            pathSearchingAnimals.add(implementGene(crossingStrategy.getFirstChild()));
+            pathSearchingAnimals.add(implementGene(crossingStrategy.getSecondChild()));
 
             if (random.nextInt(101) < PERCENT_OF_MUTATION) {
                 pathSearchingAnimals.add(implementGene(pathSearchingAnimals.get(pathSearchingAnimals.size() - 2).mutate()));
