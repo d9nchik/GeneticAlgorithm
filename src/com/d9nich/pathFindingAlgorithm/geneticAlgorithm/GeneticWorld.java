@@ -2,8 +2,8 @@ package com.d9nich.pathFindingAlgorithm.geneticAlgorithm;
 
 import com.d9nich.pathFindingAlgorithm.PathFindable;
 import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.crossoverStrategy.PartiallyMapped;
-import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.selectionStrategy.MixedSelection;
 import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.selectionStrategy.SelectionStrategy;
+import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.selectionStrategy.TournamentSelection;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,7 +16,7 @@ public class GeneticWorld implements PathFindable {
     private int[] path;
     private int length = Integer.MAX_VALUE / 2;
     //TODO: put in constructor
-    private final SelectionStrategy<PathSearchingAnimal> selectionStrategy = new MixedSelection<>();
+    private final SelectionStrategy<PathSearchingAnimal> selectionStrategy = new TournamentSelection<>();
     private final int PERCENT_OF_MUTATION = 50;
 
     public GeneticWorld(int[][] MATRIX_OF_DISTANCE) {

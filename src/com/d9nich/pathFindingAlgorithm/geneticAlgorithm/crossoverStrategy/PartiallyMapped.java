@@ -17,12 +17,22 @@ public class PartiallyMapped extends CrossingStrategy {
 
         for (int i = 0; i < firstSplitPoint; i++) {
             int fatherGene = secondFather[i];
+            for (int j = 0; j < 1000 && used.contains(fatherGene); j++) {
+                fatherGene = secondFather[changes.get(fatherGene)];
+            }
+            firstChild[i] = fatherGene;
+            used.add(fatherGene);
+        }
+
+        for (int i = secondSplitPoint; i < firstChild.length; i++) {
+            int fatherGene = secondFather[i];
             while (used.contains(fatherGene)) {
                 fatherGene = secondFather[changes.get(fatherGene)];
             }
             firstChild[i] = fatherGene;
             used.add(fatherGene);
         }
+
         return firstChild;
     }
 
