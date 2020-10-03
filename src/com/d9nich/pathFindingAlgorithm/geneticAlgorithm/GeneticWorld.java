@@ -44,6 +44,7 @@ public class GeneticWorld implements PathFindable {
 
     public void iterate() {
         //Choose of parent
+        //
         Random random = new Random();
         crossingStrategy.choosePair();
         final PathSearchingAnimal childPathSearchingAnimal = implementGene(crossingStrategy.getFirstParent()
