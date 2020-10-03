@@ -1,21 +1,19 @@
 package com.d9nich.pathFindingAlgorithm.geneticAlgorithm.crossoverStrategy;
 
-import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.PathSearchingAnimal;
-
 public abstract class CrossingStrategy {
-    private PathSearchingAnimal first;
-    private PathSearchingAnimal second;
+    protected int[] firstFather;
+    protected int[] secondFather;
 
-    private int[] firstChild;
-    private int[] secondChild;
+    protected int[] firstChild;
+    protected int[] secondChild;
 
 
-    public void setFirst(PathSearchingAnimal first) {
-        this.first = first;
+    public void setFirstFather(int[] firstFather) {
+        this.firstFather = firstFather;
     }
 
-    public void setSecond(PathSearchingAnimal second) {
-        this.second = second;
+    public void setSecondFather(int[] secondFather) {
+        this.secondFather = secondFather;
     }
 
     public int[] getFirstChild() {

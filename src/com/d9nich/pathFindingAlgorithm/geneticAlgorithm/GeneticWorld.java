@@ -1,6 +1,7 @@
 package com.d9nich.pathFindingAlgorithm.geneticAlgorithm;
 
 import com.d9nich.pathFindingAlgorithm.PathFindable;
+import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.crossoverStrategy.PartiallyMapped;
 import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.selectionStrategy.MixedSelection;
 import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.selectionStrategy.SelectionStrategy;
 
@@ -46,12 +47,17 @@ public class GeneticWorld implements PathFindable {
         //Choose of parent
         Random random = new Random();
         selectionStrategy.choosePair();
-        final PathSearchingAnimal childPathSearchingAnimal = implementGene(selectionStrategy.getFirstParent()
-                .makeCrossoverGene(selectionStrategy.getSecondParent()));
-        pathSearchingAnimals.add(childPathSearchingAnimal);
+        PartiallyMapped partiallyMapped = new PartiallyMapped();
+        partiallyMapped.setFirstFather(selectionStrategy.getFirstParent().getGene());
+        partiallyMapped.setSecondFather(selectionStrategy.getSecondParent().getGene());
+        partiallyMapped.crossAnimal();
+        pathSearchingAnimals.add(implementGene(partiallyMapped.getFirstChild()));
+        pathSearchingAnimals.add(implementGene(partiallyMapped.getSecondChild()));
 
-        if (random.nextInt(101) < PERCENT_OF_MUTATION)
-            pathSearchingAnimals.add(implementGene(childPathSearchingAnimal.mutate()));
+        if (random.nextInt(101) < PERCENT_OF_MUTATION) {
+            pathSearchingAnimals.add(implementGene(pathSearchingAnimals.get(pathSearchingAnimals.size() - 2).mutate()));
+            pathSearchingAnimals.add(implementGene(pathSearchingAnimals.get(pathSearchingAnimals.size() - 2).mutate()));
+        }
 
         killOfAnimals();
 
