@@ -2,8 +2,8 @@ package com.d9nich.pathFindingAlgorithm.geneticAlgorithm;
 
 import com.d9nich.pathFindingAlgorithm.PathFindable;
 import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.crossoverStrategy.PartiallyMapped;
+import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.selectionStrategy.InversedSelection;
 import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.selectionStrategy.SelectionStrategy;
-import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.selectionStrategy.TournamentSelection;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,15 +16,14 @@ public class GeneticWorld implements PathFindable {
     private int[] path;
     private int length = Integer.MAX_VALUE / 2;
     //TODO: put in constructor
-    private final SelectionStrategy<PathSearchingAnimal> selectionStrategy = new TournamentSelection<>();
+    private final SelectionStrategy<PathSearchingAnimal> selectionStrategy = new InversedSelection<>();
     private final int PERCENT_OF_MUTATION = 50;
 
     public GeneticWorld(int[][] MATRIX_OF_DISTANCE) {
         this.MATRIX_OF_DISTANCE = MATRIX_OF_DISTANCE;
         //TODO: number of animals shouldn't be const
-        numberOfAnimals = 100;
+        numberOfAnimals = 300;
         makePopulation();
-        selectionStrategy.setAnimals(pathSearchingAnimals);
         iterate();
     }
 
@@ -45,19 +44,26 @@ public class GeneticWorld implements PathFindable {
 
     public void iterate() {
         //Choose of parent
-        Random random = new Random();
-        selectionStrategy.choosePair();
-        PartiallyMapped partiallyMapped = new PartiallyMapped();
-        partiallyMapped.setFirstFather(selectionStrategy.getFirstParent().getGene());
-        partiallyMapped.setSecondFather(selectionStrategy.getSecondParent().getGene());
-        partiallyMapped.crossAnimal();
-        pathSearchingAnimals.add(implementGene(partiallyMapped.getFirstChild()));
-        pathSearchingAnimals.add(implementGene(partiallyMapped.getSecondChild()));
+        final ArrayList<PathSearchingAnimal> parents = (ArrayList<PathSearchingAnimal>) pathSearchingAnimals.clone();
+        selectionStrategy.setAnimals(parents);
+        for (int i = 0; i < 100; i++) {
+            Random random = new Random();
+            selectionStrategy.choosePair();
+            parents.remove(selectionStrategy.getFirstParent());
+            parents.remove(selectionStrategy.getSecondParent());
+            PartiallyMapped partiallyMapped = new PartiallyMapped();
+            partiallyMapped.setFirstFather(selectionStrategy.getFirstParent().getGene());
+            partiallyMapped.setSecondFather(selectionStrategy.getSecondParent().getGene());
+            partiallyMapped.crossAnimal();
+            pathSearchingAnimals.add(implementGene(partiallyMapped.getFirstChild()));
+            pathSearchingAnimals.add(implementGene(partiallyMapped.getSecondChild()));
 
-        if (random.nextInt(101) < PERCENT_OF_MUTATION) {
-            pathSearchingAnimals.add(implementGene(pathSearchingAnimals.get(pathSearchingAnimals.size() - 2).mutate()));
-            pathSearchingAnimals.add(implementGene(pathSearchingAnimals.get(pathSearchingAnimals.size() - 2).mutate()));
+            if (random.nextInt(101) < PERCENT_OF_MUTATION) {
+                pathSearchingAnimals.add(implementGene(pathSearchingAnimals.get(pathSearchingAnimals.size() - 2).mutate()));
+                pathSearchingAnimals.add(implementGene(pathSearchingAnimals.get(pathSearchingAnimals.size() - 2).mutate()));
+            }
         }
+
 
         killOfAnimals();
 
@@ -72,7 +78,7 @@ public class GeneticWorld implements PathFindable {
      * Killing of not good fit to live animals
      */
     private void killOfAnimals() {
-        for (int i = pathSearchingAnimals.size() - numberOfAnimals; i >= 0; i--) {
+        for (int i = pathSearchingAnimals.size() - numberOfAnimals; i > 0; i--) {
             PathSearchingAnimal worst = Collections.min(pathSearchingAnimals);
             pathSearchingAnimals.remove(worst);
         }
