@@ -39,28 +39,38 @@ public class PathSearchingAnimal implements Liveable {
         return geneOfMutateAnimal;
     }
 
+    //multiple crossover
     public int[] makeCrossoverGene(PathSearchingAnimal parent) {
+        final int NUMBER_OF_SEGMENTS = 150;
         if (parent.gene.length != gene.length)
             throw new InputMismatchException("Parent gene is not the same size as other parent");
         Set<Integer> notUsedGene = new HashSet<>();
         IntStream.of(parent.gene).forEach(notUsedGene::add);
-        int pointOfSplit = new Random().nextInt(parent.gene.length / 2) + 1;
+        int sizeOfSegment = gene.length / NUMBER_OF_SEGMENTS / 2;
 
-        int[] geneOfChildAnimal = new int[parent.gene.length];
+        int[] geneOfChildAnimal = new int[gene.length];
         //Copying first part of gene
-        for (int i = 0; i < pointOfSplit; i++) {
-            geneOfChildAnimal[i] = parent.gene[i];
-            notUsedGene.remove(parent.gene[i]);
-        }
-        //Copying second part of genes
-        AtomicInteger positionInNewGene = new AtomicInteger(pointOfSplit);
-        for (int i = pointOfSplit; i < geneOfChildAnimal.length; i++) {
-            int pieceOfGene = gene[i];
-            if (notUsedGene.contains(pieceOfGene)) {
-                notUsedGene.remove(pieceOfGene);
-                geneOfChildAnimal[positionInNewGene.getAndIncrement()] = pieceOfGene;
+        int insertPosition = 0;
+        for (int i = 0; i < NUMBER_OF_SEGMENTS; i++) {
+            int stopPoint = insertPosition + sizeOfSegment;
+            for (int j = insertPosition; j < stopPoint && j < gene.length; j++) {
+                int tempGene = parent.gene[j];
+                if (notUsedGene.contains(tempGene)) {
+                    geneOfChildAnimal[insertPosition++] = tempGene;
+                    notUsedGene.remove(tempGene);
+                }
+            }
+            //Copying second part of genes
+            stopPoint = insertPosition + sizeOfSegment;
+            for (int j = insertPosition; j < stopPoint && j < gene.length; j++) {
+                int tempGene = gene[j];
+                if (notUsedGene.contains(tempGene)) {
+                    geneOfChildAnimal[insertPosition++] = tempGene;
+                    notUsedGene.remove(tempGene);
+                }
             }
         }
+        AtomicInteger positionInNewGene = new AtomicInteger(insertPosition);
         //Copying missing genes
         notUsedGene.forEach(e -> geneOfChildAnimal[positionInNewGene.getAndIncrement()] = e);
         return geneOfChildAnimal;
