@@ -6,6 +6,10 @@ public abstract class CrossingStrategy {
     private PathSearchingAnimal first;
     private PathSearchingAnimal second;
 
+    private int[] firstChild;
+    private int[] secondChild;
+
+
     public void setFirst(PathSearchingAnimal first) {
         this.first = first;
     }
@@ -14,5 +18,13 @@ public abstract class CrossingStrategy {
         this.second = second;
     }
 
-    public abstract int[] crossAnimal();
+    public int[] getFirstChild() {
+        return firstChild;
+    }
+
+    public int[] getSecondChild() {
+        return secondChild;
+    }
+
+    public abstract void crossAnimal();
 }
