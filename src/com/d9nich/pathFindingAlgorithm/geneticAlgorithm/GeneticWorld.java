@@ -2,7 +2,7 @@ package com.d9nich.pathFindingAlgorithm.geneticAlgorithm;
 
 import com.d9nich.pathFindingAlgorithm.PathFindable;
 import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.crossoverStrategy.CrossingStrategy;
-import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.crossoverStrategy.OrderCrossing;
+import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.crossoverStrategy.CycleCrossing;
 import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.selectionStrategy.InversedSelection;
 import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.selectionStrategy.SelectionStrategy;
 
@@ -18,7 +18,7 @@ public class GeneticWorld implements PathFindable {
     private int length = Integer.MAX_VALUE / 2;
     //TODO: put in constructor
     private final SelectionStrategy<PathSearchingAnimal> selectionStrategy = new InversedSelection<>();
-    private final CrossingStrategy crossingStrategy = new OrderCrossing();
+    private final CrossingStrategy crossingStrategy = new CycleCrossing();
     private final int PERCENT_OF_MUTATION = 50;
 
     public GeneticWorld(int[][] MATRIX_OF_DISTANCE) {
