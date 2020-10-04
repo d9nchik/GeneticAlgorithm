@@ -2,12 +2,8 @@ package com.d9nich.pathFindingAlgorithm.geneticAlgorithm;
 
 import com.d9nich.pathFindingAlgorithm.PathFindable;
 import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.crossoverStrategy.CrossingStrategy;
-import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.crossoverStrategy.PartiallyMapped;
 import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.localStrategy.LocalImprovable;
-import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.localStrategy.OnePointLocal;
 import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.mutationStrategy.Mutable;
-import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.mutationStrategy.SingleMutation;
-import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.selectionStrategy.InversedSelection;
 import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.selectionStrategy.SelectionStrategy;
 
 import java.util.ArrayList;
@@ -21,16 +17,22 @@ public class GeneticWorld implements PathFindable {
     private int[] path;
     private int length = Integer.MAX_VALUE / 2;
     //TODO: put in constructor
-    private final SelectionStrategy<PathSearchingAnimal> selectionStrategy = new InversedSelection<>();
-    private final CrossingStrategy crossingStrategy = new PartiallyMapped();
-    private final Mutable mutable = new SingleMutation();
-    private final LocalImprovable localImprovable = new OnePointLocal(1.0 / 100_000_000);
-    private final int PERCENT_OF_MUTATION = 50;
+    private final SelectionStrategy<PathSearchingAnimal> selectionStrategy;
+    private final CrossingStrategy crossingStrategy;
+    private final Mutable mutable;
+    private final LocalImprovable localImprovable;
+    private final int PERCENT_OF_MUTATION;
 
-    public GeneticWorld(int[][] MATRIX_OF_DISTANCE) {
+    public GeneticWorld(int[][] MATRIX_OF_DISTANCE, int PERCENT_OF_MUTATION,
+                        SelectionStrategy<PathSearchingAnimal> selectionStrategy, CrossingStrategy crossingStrategy,
+                        Mutable mutable, LocalImprovable localImprovable, int numberOfAnimals) {
         this.MATRIX_OF_DISTANCE = MATRIX_OF_DISTANCE;
-        //TODO: number of animals shouldn't be const
-        numberOfAnimals = 300;
+        this.PERCENT_OF_MUTATION = PERCENT_OF_MUTATION;
+        this.selectionStrategy = selectionStrategy;
+        this.crossingStrategy = crossingStrategy;
+        this.mutable = mutable;
+        this.localImprovable = localImprovable;
+        this.numberOfAnimals = numberOfAnimals;
         makePopulation();
         iterate();
     }
