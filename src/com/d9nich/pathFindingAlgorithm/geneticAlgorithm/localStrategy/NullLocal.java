@@ -6,6 +6,6 @@ import java.util.ArrayList;
 
 public class NullLocal implements LocalImprovable {
     @Override
-    public void improve(ArrayList<? extends Liveable> animals, int liveFit) {
+    public void improve(ArrayList<? extends Liveable> animals, double liveFit) {
     }
 }

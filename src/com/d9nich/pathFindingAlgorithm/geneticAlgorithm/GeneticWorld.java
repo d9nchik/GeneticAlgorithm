@@ -3,6 +3,8 @@ package com.d9nich.pathFindingAlgorithm.geneticAlgorithm;
 import com.d9nich.pathFindingAlgorithm.PathFindable;
 import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.crossoverStrategy.CrossingStrategy;
 import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.crossoverStrategy.PartiallyMapped;
+import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.localStrategy.LocalImprovable;
+import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.localStrategy.OnePointLocal;
 import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.mutationStrategy.Mutable;
 import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.mutationStrategy.SingleMutation;
 import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.selectionStrategy.InversedSelection;
@@ -22,6 +24,7 @@ public class GeneticWorld implements PathFindable {
     private final SelectionStrategy<PathSearchingAnimal> selectionStrategy = new InversedSelection<>();
     private final CrossingStrategy crossingStrategy = new PartiallyMapped();
     private final Mutable mutable = new SingleMutation();
+    private final LocalImprovable localImprovable = new OnePointLocal(1.0 / 100_000_000);
     private final int PERCENT_OF_MUTATION = 50;
 
     public GeneticWorld(int[][] MATRIX_OF_DISTANCE) {
@@ -51,7 +54,7 @@ public class GeneticWorld implements PathFindable {
         //Choose of parent
         final ArrayList<PathSearchingAnimal> parents = (ArrayList<PathSearchingAnimal>) pathSearchingAnimals.clone();
         selectionStrategy.setAnimals(parents);
-        for (int i = 0; i < numberOfAnimals / 2; i++) {
+        for (int i = 0; i < parents.size() / 2; i++) {
             Random random = new Random();
             selectionStrategy.choosePair();
             parents.remove(selectionStrategy.getFirstParent());
@@ -100,7 +103,9 @@ public class GeneticWorld implements PathFindable {
     }
 
     private PathSearchingAnimal implementGene(int[] gene) {
-        return new PathSearchingAnimal(gene, calculatePathLength(gene));
+        final PathSearchingAnimal pathSearchingAnimal = new PathSearchingAnimal(gene, calculatePathLength(gene));
+        localImprovable.improve(pathSearchingAnimals, pathSearchingAnimal.fitToLive());
+        return pathSearchingAnimal;
     }
 
     @Override

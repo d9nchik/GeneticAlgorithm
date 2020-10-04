@@ -12,7 +12,7 @@ public class OnePointLocal implements LocalImprovable {
     }
 
     @Override
-    public void improve(ArrayList<? extends Liveable> animals, int liveFit) {
-        animals.removeIf(liveable -> liveable.fitToLive() >= liveFit && liveable.fitToLive() - liveFit < lambda);
+    public void improve(ArrayList<? extends Liveable> animals, double liveFit) {
+        animals.removeIf(liveable -> liveable.fitToLive() <= liveFit && liveFit - liveable.fitToLive() < lambda);
     }
 }
