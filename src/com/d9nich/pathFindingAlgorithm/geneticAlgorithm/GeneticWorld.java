@@ -2,7 +2,9 @@ package com.d9nich.pathFindingAlgorithm.geneticAlgorithm;
 
 import com.d9nich.pathFindingAlgorithm.PathFindable;
 import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.crossoverStrategy.CrossingStrategy;
-import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.crossoverStrategy.CycleCrossing;
+import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.crossoverStrategy.PartiallyMapped;
+import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.mutationStrategy.Mutable;
+import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.mutationStrategy.SingleMutation;
 import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.selectionStrategy.InversedSelection;
 import com.d9nich.pathFindingAlgorithm.geneticAlgorithm.selectionStrategy.SelectionStrategy;
 
@@ -18,7 +20,8 @@ public class GeneticWorld implements PathFindable {
     private int length = Integer.MAX_VALUE / 2;
     //TODO: put in constructor
     private final SelectionStrategy<PathSearchingAnimal> selectionStrategy = new InversedSelection<>();
-    private final CrossingStrategy crossingStrategy = new CycleCrossing();
+    private final CrossingStrategy crossingStrategy = new PartiallyMapped();
+    private final Mutable mutable = new SingleMutation();
     private final int PERCENT_OF_MUTATION = 50;
 
     public GeneticWorld(int[][] MATRIX_OF_DISTANCE) {
@@ -61,8 +64,8 @@ public class GeneticWorld implements PathFindable {
             pathSearchingAnimals.add(implementGene(crossingStrategy.getSecondChild()));
 
             if (random.nextInt(101) < PERCENT_OF_MUTATION) {
-                pathSearchingAnimals.add(implementGene(pathSearchingAnimals.get(pathSearchingAnimals.size() - 2).mutate()));
-                pathSearchingAnimals.add(implementGene(pathSearchingAnimals.get(pathSearchingAnimals.size() - 2).mutate()));
+                pathSearchingAnimals.add(implementGene(mutable.mutate(crossingStrategy.getFirstChild())));
+                pathSearchingAnimals.add(implementGene(mutable.mutate(crossingStrategy.getSecondChild())));
             }
         }
 
