@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig host="ec2-54-237-217-29.compute-1.amazonaws.com" id="2ab8cc5d-bbf4-44f4-b74d-6adb4b6394de" keyPath="$USER_HOME$/Загрузки/go.pem" port="22" nameFormat="DESCRIPTIVE" username="ec2-user" />
+    </configs>
+  </component>
+</project>

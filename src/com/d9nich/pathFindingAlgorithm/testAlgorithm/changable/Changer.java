@@ -27,9 +27,11 @@ public class Changer {
             changeable.setTesting(false);
             changeable.fromStart();
             position++;
-            if (position > array.length) {
+            System.out.println("Check parameter number: " + (position + 1));
+            if (position >= array.length) {
                 position = 0;
                 cycleNumber++;
+                System.out.println("Cycle: " + (cycleNumber + 1));
             }
             iterate();
         }

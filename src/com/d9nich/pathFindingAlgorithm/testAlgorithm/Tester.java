@@ -46,8 +46,8 @@ public class Tester {
             if (newWorldLength < best) {
                 best = newWorldLength;
                 changer.setOptimal();
+                System.out.println(best);
             }
-            System.out.println(best);
         }
         System.out.println("Results of work:");
         System.out.println("Percent of mutation: " + percentOfMutation.getOptimalNumber());

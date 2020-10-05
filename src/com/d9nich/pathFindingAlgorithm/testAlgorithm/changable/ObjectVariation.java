@@ -22,7 +22,7 @@ public class ObjectVariation<T> implements Changeable<T> {
 
     @Override
     public boolean hasNext() {
-        return position < array.length;
+        return position < array.length - 1;
     }
 
     @Override
