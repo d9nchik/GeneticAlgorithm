@@ -11,6 +11,7 @@ public class IntegerVariation implements Changeable<Integer> {
         this.MAX = MAX;
         this.MIN = MIN;
         this.currentValue = MIN;
+        this.optimalValue = currentValue;
     }
 
     @Override
