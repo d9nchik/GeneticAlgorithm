@@ -5,6 +5,8 @@ import java.util.InputMismatchException;
 public class ObjectVariation<T> implements Changeable<T> {
     private final T[] array;
     private int position;
+    private int optimalPosition;
+    private boolean isTesting;
 
     public ObjectVariation(T[] array) {
         this.array = array;
@@ -30,6 +32,18 @@ public class ObjectVariation<T> implements Changeable<T> {
 
     @Override
     public T get() {
-        return array[position];
+        if (isTesting)
+            return array[position];
+        return array[optimalPosition];
+    }
+
+    @Override
+    public void setOptimal() {
+        optimalPosition = position;
+    }
+
+    @Override
+    public void setTesting(boolean isTesting) {
+        this.isTesting = isTesting;
     }
 }

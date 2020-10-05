@@ -8,4 +8,8 @@ public interface Changeable<T> {
     void fromStart();
 
     T get();
+
+    void setOptimal();
+
+    void setTesting(boolean isTesting);
 }

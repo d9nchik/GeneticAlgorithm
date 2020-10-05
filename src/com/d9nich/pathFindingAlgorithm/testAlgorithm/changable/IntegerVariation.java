@@ -4,6 +4,8 @@ public class IntegerVariation implements Changeable<Integer> {
     private final int MAX;
     private final int MIN;
     private int currentValue;
+    private int optimalValue;
+    private boolean isTesting;
 
     public IntegerVariation(int MAX, int MIN) {
         this.MAX = MAX;
@@ -30,6 +32,18 @@ public class IntegerVariation implements Changeable<Integer> {
 
     @Override
     public Integer get() {
-        return currentValue;
+        if (isTesting)
+            return currentValue;
+        return optimalValue;
+    }
+
+    @Override
+    public void setOptimal() {
+        optimalValue = currentValue;
+    }
+
+    @Override
+    public void setTesting(boolean isTesting) {
+        this.isTesting = isTesting;
     }
 }
