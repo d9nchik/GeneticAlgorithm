@@ -12,4 +12,6 @@ public interface Changeable<T> {
     void setOptimal();
 
     void setTesting(boolean isTesting);
+
+    int getOptimalNumber();
 }

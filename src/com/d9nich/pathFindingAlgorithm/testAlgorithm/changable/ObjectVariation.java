@@ -46,4 +46,9 @@ public class ObjectVariation<T> implements Changeable<T> {
     public void setTesting(boolean isTesting) {
         this.isTesting = isTesting;
     }
+
+    @Override
+    public int getOptimalNumber() {
+        return optimalPosition;
+    }
 }

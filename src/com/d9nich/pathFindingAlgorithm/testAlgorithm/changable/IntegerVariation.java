@@ -47,4 +47,9 @@ public class IntegerVariation implements Changeable<Integer> {
     public void setTesting(boolean isTesting) {
         this.isTesting = isTesting;
     }
+
+    @Override
+    public int getOptimalNumber() {
+        return optimalValue;
+    }
 }
