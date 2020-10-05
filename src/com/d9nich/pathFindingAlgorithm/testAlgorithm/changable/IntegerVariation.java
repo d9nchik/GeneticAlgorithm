@@ -1,4 +1,4 @@
-package com.d9nich.pathFindingAlgorithm.testAlgorithm;
+package com.d9nich.pathFindingAlgorithm.testAlgorithm.changable;
 
 public class IntegerVariation implements Changeable<Integer> {
     private final int MAX;
