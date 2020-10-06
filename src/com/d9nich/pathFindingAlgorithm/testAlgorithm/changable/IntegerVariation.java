@@ -6,24 +6,30 @@ public class IntegerVariation implements Changeable<Integer> {
     private int currentValue;
     private int optimalValue;
     private boolean isTesting;
+    private final int INCREASE_VALUE;
 
-    public IntegerVariation(int MAX, int MIN) {
+    public IntegerVariation(int MAX, int MIN, int INCREASE_VALUE) {
         this.MAX = MAX;
         this.MIN = MIN;
+        this.INCREASE_VALUE = INCREASE_VALUE;
+    }
+
+    public IntegerVariation(int MAX, int MIN) {
+        this(MAX, MIN, 1);
         this.currentValue = MIN;
         this.optimalValue = currentValue;
     }
 
     @Override
     public void change() {
-        currentValue++;
+        currentValue += INCREASE_VALUE;
         if (currentValue > MAX)
             throw new UnsupportedOperationException("Overflow");
     }
 
     @Override
     public boolean hasNext() {
-        return currentValue != MAX;
+        return currentValue + INCREASE_VALUE <= MAX;
     }
 
     @Override
