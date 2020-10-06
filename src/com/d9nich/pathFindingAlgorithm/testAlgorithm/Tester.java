@@ -32,13 +32,16 @@ public class Tester {
                 new SingleMutation(), new DoubleMutation()});
         Changeable<LocalImprovable> localImprovable = new ObjectVariation<>(new LocalImprovable[]{
                 new OnePointLocal(1.0 / 100_000_00), new NullLocal()});
-        Changeable<Integer> numberOfAnimals = new IntegerVariation(600, 20);
+        Changeable<Integer> numberOfAnimals = new IntegerVariation(600, 20, 10);
         Changer changer = new Changer(new Changeable[]{percentOfMutation, selectionStrategy, crossingStrategy, mutable,
                 localImprovable, numberOfAnimals}, 5);
 
         double best = Double.POSITIVE_INFINITY;
         final int[][] MATRIX_OF_DISTANCE = MatrixDistanceGenerator.generate(300);
+        int counter = 1;
         while (changer.hasNext()) {
+            if (counter++ % 10 == 0)
+                System.out.println("Iteration number: " + counter);
             changer.iterate();
             double newWorldLength = workOfWorld(new GeneticWorld(MATRIX_OF_DISTANCE, percentOfMutation.get(),
                     selectionStrategy.get(), crossingStrategy.get(), mutable.get(), localImprovable.get(),
@@ -46,7 +49,7 @@ public class Tester {
             if (newWorldLength < best) {
                 best = newWorldLength;
                 changer.setOptimal();
-                System.out.println(best);
+                System.out.println("New best: " + best);
             }
         }
         System.out.println("Results of work:");

@@ -12,12 +12,12 @@ public class IntegerVariation implements Changeable<Integer> {
         this.MAX = MAX;
         this.MIN = MIN;
         this.INCREASE_VALUE = INCREASE_VALUE;
+        this.currentValue = MIN;
+        this.optimalValue = currentValue;
     }
 
     public IntegerVariation(int MAX, int MIN) {
         this(MAX, MIN, 1);
-        this.currentValue = MIN;
-        this.optimalValue = currentValue;
     }
 
     @Override
