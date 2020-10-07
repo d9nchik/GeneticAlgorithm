@@ -56,7 +56,7 @@ public class GeneticWorld implements PathFindable {
         //Choose of parent
         final ArrayList<PathSearchingAnimal> parents = (ArrayList<PathSearchingAnimal>) pathSearchingAnimals.clone();
         selectionStrategy.setAnimals(parents);
-        for (int i = 0; i < parents.size() / 2; i++) {
+//        for (int i = 0; i < parents.size() / 2; i++) {
             Random random = new Random();
             selectionStrategy.choosePair();
             parents.remove(selectionStrategy.getFirstParent());
@@ -72,7 +72,7 @@ public class GeneticWorld implements PathFindable {
                 pathSearchingAnimals.add(implementGene(mutable.mutate(crossingStrategy.getFirstChild())));
                 pathSearchingAnimals.add(implementGene(mutable.mutate(crossingStrategy.getSecondChild())));
             }
-        }
+//        }
 
 
         killOfAnimals();
