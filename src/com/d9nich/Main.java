@@ -13,9 +13,9 @@ public class Main {
         int[][] matrix = MatrixDistanceGenerator.generate(300);
         System.out.println(new GreedyAlgorithm(matrix).getLength());
         GeneticWorld geneticWorld = new GeneticWorld(matrix, 50, new RandomSelection<>(), new PartiallyMapped(),
-                new SingleMutation(), new OnePointLocal(1.0 / 100_000_000), 600);
+                new SingleMutation(), new OnePointLocal(1.0 / 100_000_000), 20);
         long startTime = System.currentTimeMillis();
-        for (int i = 0; i < 5_000 * 40; i++) {
+        for (int i = 0; i < 5_000 * 50; i++) {
             if (i % 5_000 == 0)
                 System.out.println("Length: " + geneticWorld.getLength());
             geneticWorld.iterate();
